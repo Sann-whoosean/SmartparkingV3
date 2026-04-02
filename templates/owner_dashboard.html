@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<div class="container mt-4">
+    <h2>Owner Dashboard</h2>
+
+    <!-- Tabel Log Transaksi -->
+    <h4>Log Transaksi</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Card ID</th>
+                <th>Check-in</th>
+                <th>Checkout</th>
+                <th>Durasi</th>
+                <th>Fee</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in data %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.card_id }}</td>
+                <td>{{ t.checkin_time }}</td>
+                <td>{{ t.checkout_time if t.checkout_time else '-' }}</td>
+                <td>
+                    {% if t.duration %}
+                        {% set jam = t.duration // 60 %}
+                        {% set menit = t.duration % 60 %}
+                        {{ jam }} jam {{ menit }} menit
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if t.fee %}
+                        Rp {{ "{:,}".format(t.fee) }}
+                    {% else %}
+                        Rp 0
+                    {% endif %}
+                </td>
+                <td>{{ t.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center">Tidak ada data</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Grafik Batang & Pie -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5>Transaksi Per Hari (Bar Chart)</h5>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h5>Transaksi Berdasarkan Status (Pie Chart)</h5>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <button id="btnPdf" class="btn btn-primary mt-3">Cetak PDF Rekapan</button>
+</div>
+
+<script>
+    // Data dari Flask, pakai var dan |safe
+    var labelsHari = {{ daily_labels|tojson|safe }};
+    var dataHari = {{ daily_count|tojson|safe }};
+    var statusLabels = {{ status_labels|tojson|safe }};
+    var statusCount = {{ status_count|tojson|safe }};
+
+    // Bar Chart per hari
+    var barCtx = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: labelsHari,
+            datasets: [{
+                label: 'Jumlah Transaksi',
+                data: dataHari,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)'
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Pie Chart status
+    var pieCtx = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusCount,
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Cetak PDF
+    document.getElementById('btnPdf').addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Rekapan Transaksi", 10, 10);
+        doc.html(document.querySelector('table'), {
+            callback: function(pdf) {
+                pdf.save('rekapan_transaksi.pdf');
+            },
+            x: 10,
+            y: 20
+        });
+    });
+</script>

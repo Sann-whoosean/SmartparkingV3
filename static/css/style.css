@@ -1,0 +1,72 @@
+pythpython/* style.css */
+
+/* Container spacing */
+.container {
+    max-width: 900px;
+    background-color: #f8f9fa; /* warna light gray ala bootstrap */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+h4 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Table styling */
+table {
+    background-color: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+thead th {
+    background-color: #0d6efd; /* bootstrap primary */
+    color: #fff;
+    text-align: center;
+}
+
+tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Hover effect on rows */
+tbody tr:hover {
+    background-color: #e9ecef;
+    transition: 0.3s;
+}
+
+/* Button styling inside table */
+.table button {
+    padding: 4px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.table button.check-out {
+    background-color: #198754; /* bootstrap success */
+    color: #fff;
+}
+
+.table button.check-out:hover {
+    background-color: #157347;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
