@@ -1,3 +1,6 @@
 flask
 mysql-connector-python
 paho-mqtt
+supabase
+dotenv
+Blueprint
