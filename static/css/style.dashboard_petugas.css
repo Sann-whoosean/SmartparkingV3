@@ -1,0 +1,100 @@
+body {
+    min-height: 100vh;
+    background: #f5f7fa;
+    font-family: "Poppins", sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h2.header-title {
+    font-weight: 700;
+    font-size: 32px;
+    color: #0d6efd;
+}
+
+.btn-logout {
+    background: #dc3545;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #fff;
+    padding: 8px 16px;
+}
+
+.btn-logout:hover {
+    background: #b02a37;
+}
+
+.card {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 18px;
+    background: #e9ecef;
+    border-radius: 12px 12px 0 0;
+}
+
+.card-body {
+    padding: 0;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th,
+.table td {
+    padding: 12px 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+    color: #495057;
+}
+
+.table thead th {
+    font-weight: 600;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.btn-outline-success {
+    border-radius: 6px;
+    font-weight: 600;
+    color: #198754;
+    border-color: #198754;
+}
+
+.btn-outline-success:hover {
+    background-color: #198754;
+    color: #fff;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #0d6efd;
+}
+
+.card-text {
+    font-size: 16px;
+    color: #495057;
+}
+
+@media (max-width: 768px) {
+    h2.header-title {
+        font-size: 24px;
+    }
+    .table th,
+    .table td {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}

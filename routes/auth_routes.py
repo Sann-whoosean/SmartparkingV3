@@ -8,6 +8,8 @@ from flask import (
     jsonify,
 )
 from config.db import get_db
+
+import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -19,9 +21,6 @@ def login():
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
-        
-        if not email or not password:
-            return render_template("login.html", msg="Isi semua field")
 
         db = get_db()
         try:
@@ -30,22 +29,27 @@ def login():
 
             if user_data:
                 user = user_data[0]
-                print(f"User ditemukan: {user['email']}")
 
-                if check_password_hash(user["password"], password):
+                hashed_input = hashlib.md5(password.encode()).hexdigest()
+
+                if hashed_input == user["password"]:
                     print("Password Cocok! Mengarahkan ke dashboard...")
                     session["role"] = user["role"].lower() if user.get("role") else ""
                     session["email"] = user["email"]
+
                     return redirect(url_for("dashboard.dashboard"))
                 else:
-                    print("Password SALAH (Hash tidak cocok)")
+                    print(
+                        f"Password SALAH. Input: {hashed_input} vs DB: {user['password']}"
+                    )
+                    return render_template("login.html", msg="Email / password salah")
             else:
-                print("User tidak ditemukan di database")
+                print("User tidak ditemukan")
                 return render_template("login.html", msg="Email / password salah")
 
         except Exception as e:
             print(f"DEBUG LOGIN ERROR: {e}")
-            return render_template("login.html", msg=f"Error: {str(e)}")
+            return render_template("login.html", msg="Terjadi kesalahan sistem")
 
     return render_template("login.html")
 

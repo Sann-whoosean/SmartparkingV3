@@ -1,4 +1,4 @@
-from flask import render_template, url_for, session, Blueprint, redirect
+from flask import url_for, session, Blueprint, redirect
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -11,10 +11,10 @@ def dashboard():
     role = session.get("role", "").lower().strip()
 
     if role == "owner":
-        return render_template("dashboard_owner.html", email=session["email"])
+        return redirect(url_for("owner.owner"))  # Sesuaikan nama fungsi di owner_bp
 
     if role == "petugas":
-        return render_template("dashboard_petugas.html", email=session["email"])
+        return redirect(url_for("petugas.petugas"))
 
     session.clear()
-    return redirect("/login")
+    return redirect(url_for("auth.login"))
