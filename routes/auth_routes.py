@@ -1,6 +1,13 @@
-from flask import request, render_template, redirect, session, Blueprint, jsonify
+from flask import (
+    request,
+    render_template,
+    redirect,
+    session,
+    Blueprint,
+    url_for,
+    jsonify,
+)
 from config.db import get_db
-import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -10,10 +17,9 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Gunakan form.get untuk data dari HTML
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
-
+        
         if not email or not password:
             return render_template("login.html", msg="Isi semua field")
 
@@ -24,18 +30,23 @@ def login():
 
             if user_data:
                 user = user_data[0]
+                print(f"User ditemukan: {user['email']}")
 
                 if check_password_hash(user["password"], password):
+                    print("Password Cocok! Mengarahkan ke dashboard...")
                     session["role"] = user["role"].lower() if user.get("role") else ""
                     session["email"] = user["email"]
-                    return redirect("/dashboard")
-
-            return render_template("login.html", msg="Email / password salah")
+                    return redirect(url_for("dashboard.dashboard"))
+                else:
+                    print("Password SALAH (Hash tidak cocok)")
+            else:
+                print("User tidak ditemukan di database")
+                return render_template("login.html", msg="Email / password salah")
 
         except Exception as e:
+            print(f"DEBUG LOGIN ERROR: {e}")
             return render_template("login.html", msg=f"Error: {str(e)}")
 
-    # Method GET
     return render_template("login.html")
 
 
