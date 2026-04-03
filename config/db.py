@@ -10,7 +10,7 @@ def get_db():
     key = os.getenv("SUPABASE_KEY")
     print(f"DEBUG: URL={url}, KEY={key}")
     if not url or not key:
-        
+
         print(f"DEBUG: URL={url}, KEY={key}")
         raise ValueError("SUPABASE_URL atau SUPABASE_KEY tidak ditemukan di .env")
 
