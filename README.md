@@ -365,6 +365,6 @@ Kontribusi sangat terbuka! Jika ingin berkontribusi:
 
 <div align="center">
 
-Dibuat dengan ❤️ untuk **Smart Parking System**
+**Smart Parking System**
 
 </div>
