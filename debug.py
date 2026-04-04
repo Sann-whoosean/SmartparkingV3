@@ -4,7 +4,7 @@ import time
 BROKER = "broker.hivemq.com"
 PORT = 1883
 
-# List topik yang mau dicek
+
 topics = [
     "parking/sandy/rfid/entry",
     "parking/sandy/rfid/exit",
@@ -13,7 +13,6 @@ topics = [
     "parking/sandy/lcd"
 ]
 
-# Callback saat connect
 def on_connect(client, userdata, flags, reasonCode, properties=None):
     print("Connected to broker:", reasonCode)
     # Subscribe semua topik
